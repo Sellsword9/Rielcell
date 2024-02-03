@@ -15,6 +15,9 @@ struct User {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let pool = db::pool();
+    if pool.is_none() {
+        panic!("Failed to create pool");
+    }
     let addrs = "localhost:8000";
     HttpServer::new(move || {
         App::new()
