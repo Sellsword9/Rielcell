@@ -1,15 +1,8 @@
-use sqlx::mysql::MySqlPool;
-/*use sqlx::Pool;
-use sqlx::MySql;
-*/
-pub async fn pool() -> MySqlPool {
-    // Define your database URL
-    let database_url = "mysql://root:pass@localhost/rust_test_data";
-
-    // Create a database connection pool
-    let pool = MySqlPool::connect(database_url)
-        .await
-        .expect("Failed to create database pool");
-
-    pool
+use mysql::*;
+use mysql::prelude::*;
+pub fn pool() -> Option<Pool> {
+    let url = std::env::var("DATABASE_URL").ok()?;
+    let opts = Opts::from_url(&url).ok()?;
+    let pool = Pool::new(opts).ok()?;
+    Some(pool)
 }
