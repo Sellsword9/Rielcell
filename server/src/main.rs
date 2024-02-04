@@ -40,6 +40,6 @@ async fn logout(req: HttpRequest) -> HttpResponse {
     }
 }
 #[post("/login")]
-async fn login(form: Form<User>, db: Data<User>) -> HttpResponse {
+async fn login(form: Form<User>, db: Data<Pool>) -> HttpResponse {
     HttpResponse::Unauthorized().finish()
 }

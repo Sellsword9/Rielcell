@@ -1,5 +1,4 @@
 use mysql::*;
-use mysql::prelude::*;
 use dotenv::dotenv;
 pub fn pool() -> Option<Pool> {
     dotenv().ok();
