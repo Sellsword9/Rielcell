@@ -12,13 +12,33 @@
         {% endblock %}
     </head>
     <body>
-        <h4>user:yeray password: yeray123</h4>
+        <div class="header" style="padding: 2%; display: flex; align-items: center;">
+            <div style="float: left; margin-right: 20px;">
+                <a href="{{ path('app_main') }}" style="text-decoration: none; color: inherit;">
+                <img src="{{ asset('bird.png') }}" alt="Rielcell Logo" style="height: 50px; width: auto;">
+                </a>
+            </div>
+            <div class="header-text" style="text-align: center; font-size: 24px; font-weight: bold;" >
+                Rielcell Repository Management System
+            </div>
+
+            <! -- Search bar -->
+            <div style="margin-left: auto; margin-right: 20px;">
+                <form action="{{ path('app_search') }}" method="get" style="display: flex; align-items: center;">
+                    <input type="text" name="name" placeholder="Search repositories..." style="padding: 5px; font-size: 16px;">
+                    <input type="hidden" name="page" value="1">
+                    <button type="submit" style="padding: 5px 10px; font-size: 16px;">Search</button>
+                </form>
+            </div>
+        </div>
+        </div>
+        {# <h4>user:yeray password: yeray123</h4>
         <h4> user:admin password: admin1123</h4>  
         <h3>TODO: Delete this</h3>
         <a href="{{ path('app_main') }}">Main</a>
         <a href="{{ path('app_login') }}">Login</a>
         <a href="{{ path('app_logout') }}">Logout</a>
-        <a href="{{ path('app_register') }}">Register</a>
+        <a href="{{ path('app_register') }}">Register</a> #}
         {% block body %}{% endblock %}
     </body>
 </html>

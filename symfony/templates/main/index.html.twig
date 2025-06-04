@@ -11,24 +11,39 @@
 <div class="example-wrapper">
     {% if app.user %}
         <h1> Hello {{ app.user.username }}</h1>
-    
-    <h2> Your repositories</h2>
-    <a href="{{ path('app_web_repo') }}">
-        <h3> Create a new repository? </h3>
-    </a>
+        {% if isAdmin is defined and isAdmin %}
+            <a href="{{ path('app_admin') }}">
+                <h3> Go to Admin Dashboard </h3>
+            </a>
+        {% endif %}
+        <h2> Your repositories</h2>
+        <a href="{{ path('app_web_repo') }}">
+            <h3> Create a new repository? </h3>
+        </a>
+        {% if repos is empty %}
+            <p>You have no repositories yet. </p>
+        {% endif %}
+        
+        <ul>
+            {% for repo in repos %}
+                <li>
+                    <a href="{{ path('app_repo_display', { 'username': app.user.username, 'repo_name': repo.name }) }}">
+                        <strong>{{ repo.name }}</strong>
+                    
+                </li>
+            {% endfor %}
+        </ul>
+        <div style="position: absolute; bottom: 2.5vh; right: 0; margin: 20px; background-color: #ff0000; color: white; padding: 10px; border-radius: 5em;">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <a href="{{ path('app_logout') }}" style="color: white; text-decoration: none;">Log out</a>
+            </div>
+            
+        </div>
     {% else %}
         <h1> Hello Guest</h1>
         <a href="{{ path('app_login') }}">
             <h2> Please login to see or create repositories</h2>
         </a>
     {% endif %}
-    <ul>
-        {% for repo in repos %}
-            <li>
-                <!-- TODO: Add link to repo -->
-                {{ repo.name }}
-            </li>
-        {% endfor %}
-    </ul>
 </div>
 {% endblock %}

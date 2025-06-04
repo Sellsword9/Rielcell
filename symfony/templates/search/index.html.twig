@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Search results</h1>
+    <h3> {{ total }} repositories found (Showing {{ pagesize }})</h3>
+
+    {% if repos is empty %}
+        <p>No repositories found.</p>
+    {% else %}
+        <ul>
+            {% for repo in repos %}
+                <li>
+                    <a href="{{ path('app_repo_display', { 'username': repo.owner.username, 'repo_name': repo.name }) }}">
+                        <strong>{{ repo.name }}</strong> by {{ repo.owner.username }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- Pagination controls -->
+        <div class="pagination">
+            {% if currentPage > 1 %}
+                <a href="{{ path('app_search', { 'query': query, 'page': currentPage - 1 }) }}">Previous</a>
+            {% endif %}
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            {% if currentPage < totalPages %}
+                <a href="{{ path('app_search', { 'query': query, 'page': currentPage + 1 }) }}">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

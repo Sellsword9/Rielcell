@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\User;
 
 final class MainController extends AbstractController
 {
@@ -27,6 +28,11 @@ final class MainController extends AbstractController
     #[Route('/', name: 'app_main')]
     public function index(RepoRepository $repoRepository): Response
     {
+        # If user is deleted, redirect to login
+        $user = $this->getUser();
+        if ($user instanceof User && $user->getDeleted() == "1") {
+            return $this->redirectToRoute('app_logout');
+        }
         $repos = $repoRepository->findNonDeletedBy(['owner' => $this->getUser()]);
         if (!$repos) {
             $this->addFlash('info', 'No repositories found for this user.');
@@ -38,9 +44,19 @@ final class MainController extends AbstractController
             }
         }
 
+        #Check admin
+        $isAdmin = false;
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            if ($user && ($user->getRole() == 'admin' || $user->getRole() == 'superadmin')) {
+                $isAdmin = true;
+            }
+        }
+
         return $this->render('main/index.html.twig', [
             'repos' => $repos,
             'controller_name' => 'MainController',
+            'isAdmin' => $isAdmin,
         ]);
     }
 
@@ -102,16 +118,9 @@ final class MainController extends AbstractController
             return $this->redirectToRoute('app_main');
         }
 
-        /* return $this->render('repo/web_repo.html.twig', [
+        return $this->render('repo/web_repo.html.twig', [
             'form' => $form->createView(),
             'blacklist' => $blacklist,
-        ]); */
-        # Change to json
-        return $this->json([
-            'form' => $this->renderView('repo/web_repo.html.twig', [
-                'form' => $form->createView(),
-                'blacklist' => $blacklist,
-            ]),
         ]);
     }
 }

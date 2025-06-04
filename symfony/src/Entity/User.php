@@ -41,6 +41,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Repo::class, mappedBy: 'owner')]
     private Collection $repos;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $role = null;
+
+    #[ORM\Column(length: 10)]
+    private ?string $deleted = null;
+
     public function __construct()
     {
         $this->repos = new ArrayCollection();
@@ -175,5 +181,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         $blacklist = array_merge($blacklist, $windowsReserved);
         return $blacklist;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getDeleted(): ?string
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(string $deleted): static
+    {
+        $this->deleted = $deleted;
+
+        return $this;
     }
 }
