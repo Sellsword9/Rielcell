@@ -16,10 +16,6 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache mods
 RUN a2enmod rewrite cgi alias env
 
-# Add custom auth script
-COPY ./auth /usr/local/bin/git-auth
-RUN chmod +x /usr/local/bin/git-auth
-
 # Apache config for Symfony
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
