@@ -1,0 +1,13 @@
+#!/bin/bash
+
+read USER
+read PASSWORD
+
+# Petición local a Symfony
+RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -u "$USER:$PASSWORD" http://localhost/auth/git-check)
+
+if [ "$RESPONSE" -eq 200 ]; then
+    exit 0
+else
+    exit 1
+fi

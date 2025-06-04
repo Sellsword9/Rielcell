@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: mysql://symfony:symfony@db:3306/symfony
+    volumes:
+      - ./symfony:/var/www/html
+      - ./repos:/var/www/git
+    networks:
+      - symfony_net
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - symfony_net
+
+networks:
+  symfony_net:
+
+
+volumes:
+  db_data:

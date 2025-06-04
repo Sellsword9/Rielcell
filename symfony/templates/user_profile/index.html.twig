@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserProfileController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <!-- This renders the user profile -->
+    <div>
+    <h1>{{ user.username }}
+    <span style="color: rgb(119, 35, 32)">
+    {% if is_owner %} (you) {% endif %}
+    </span>
+    </h1>
+    </div>
+    
+    {% for repo in user.repos %}
+        <div>
+            <a href="{{ path('app_repo_display', {'username': user.username, 'repo_name': repo.name}) }}"> <!-- TODO -->
+                <h2>{{ repo.name }}</h2>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
