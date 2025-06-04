@@ -5,9 +5,12 @@ Rielcell no tiene ninguna dependencia más allá de que la máquina anfitriona t
 ## Manual de Instalación
 Clona el repositorio oficial de Rielcell:
 ```bash git clone https://sellsword9/rielcell```
-Ejecuta el comando preparado en Makefile (opcional) o construye la imagen de Docker manualmente: //
+Ejecuta el comando preparado en Makefile (opcional) o construye la imagen de Docker manualmente:
+
 ```bash make sd```
+
 o en su lugar:
+
 ```bash
   cd rielcell 
   docker build
