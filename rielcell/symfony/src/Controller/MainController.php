@@ -77,6 +77,7 @@ final class MainController extends AbstractController
     public function newRepo(Request $request, EntityManagerInterface $em): Response
     {
         $repo = new Repo();
+        $repo->setRielSeed("notset");
         $repo->setDeleted(false);
         $repo->setOwner($this->getUser());
 
@@ -95,10 +96,10 @@ final class MainController extends AbstractController
             $n = strtolower($rawName);
             $repo->setName($n);
 
-            $serverPath = $this->reposPath . $repo->getOwner()->getUsername() . '/' . $n . '.git';
-            $repo->setServerpath($serverPath);
 
             if ($repo->getVcs() === 'git') {
+                $serverPath = $this->reposPath . $repo->getOwner()->getUsername() . '/' . $n . '.git';
+                $repo->setServerpath($serverPath);
                 if (!is_dir($serverPath)) {
                     $dirCreated = mkdir($serverPath, 0777, true);
                     $repo->setHasDirectorymade($dirCreated);
@@ -110,6 +111,12 @@ final class MainController extends AbstractController
                     $repo->setHasDirectorymade(true);
                     $this->createGitRepo($repo);
                 }
+            } else {
+                $repo->setServerpath($this->reposPath . $repo->getOwner()->getUsername() . '/' . $n);
+                $dirCreated = mkdir($repo->getServerpath(), 0777, true);
+                $subdirCreated = mkdir($repo->getServerpath() . '/.riel', 0777, true);
+                $repo->setRielSeed(md5($rawName . time()));
+                $repo->setHasDirectorymade($dirCreated && $subdirCreated);
             }
 
             $em->persist($repo);

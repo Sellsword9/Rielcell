@@ -20,6 +20,10 @@
     {% if error %}
         <h4> We couldn't find the repository files </h4>
     {% else %}
+    <h4> Repository Type: {{ repo.vcs }} </h4>
+    {% if repo.vcs == 'riel' %}
+        <h4> Riel seed: {{ repo.RielSeed }} </h4>
+    {% endif %}
     <h4> Files: </h4>
     <p> 
         {% for file in files %}

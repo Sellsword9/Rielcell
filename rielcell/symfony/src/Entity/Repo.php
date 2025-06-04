@@ -41,6 +41,9 @@ class Repo
     #[ORM\Column(name: 'is_private', type: 'boolean')]
     private ?bool $isPrivate = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $RielSeed = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,6 +129,18 @@ class Repo
     public function setIsPrivate(bool $isPrivate): static
     {
         $this->isPrivate = $isPrivate;
+
+        return $this;
+    }
+
+    public function getRielSeed(): ?string
+    {
+        return $this->RielSeed;
+    }
+
+    public function setRielSeed(string $RielSeed): static
+    {
+        $this->RielSeed = $RielSeed;
 
         return $this;
     }
